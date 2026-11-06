@@ -43,7 +43,7 @@
     ]
   },
   "packageLayout": {
-    "verification": "upstream-declarations-only",
+    "verification": "archive-members-verified",
     "requiredPaths": [
       "Mods/MelatoninAccess.dll",
       "Mods/cutscene-ad/manifest.json",

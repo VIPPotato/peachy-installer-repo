@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/VIPPotato/peachy-installer-repo/blob/main/schemas/workshop-recipe.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "modId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "gameId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "deliveryRoute": {
+      "const": "steam-workshop"
+    },
+    "workshop": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048
+        }
+      },
+      "required": [
+        "appId",
+        "itemId",
+        "url"
+      ],
+      "additionalProperties": false
+    },
+    "installedProbe": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "not-implemented"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "ownership": {
+      "const": "external-steam"
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "install": {
+          "const": false
+        },
+        "update": {
+          "const": false
+        },
+        "uninstall": {
+          "const": false
+        },
+        "adoption": {
+          "const": false
+        }
+      },
+      "required": [
+        "install",
+        "update",
+        "uninstall",
+        "adoption"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "modId",
+    "gameId",
+    "deliveryRoute",
+    "workshop",
+    "installedProbe",
+    "ownership",
+    "capabilities"
+  ],
+  "additionalProperties": false
+}

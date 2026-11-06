@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "modId": "melatonin-access",
+  "version": "1.4",
+  "release": {
+    "provider": "github",
+    "repository": "VIPPotato/melatonin-access",
+    "id": 391796478,
+    "tag": "v1.4",
+    "commit": "3074978a502c050bc52a36a7365618ce50cd6c33",
+    "channel": "stable"
+  },
+  "artifacts": [
+    {
+      "os": "windows",
+      "gameArchitecture": "x86",
+      "layout": "game-root-overlay",
+      "asset": {
+        "id": 573493024,
+        "name": "MelatoninAccess-v1.4.zip",
+        "size": 215516,
+        "sha256": "b088af9155d24f5305186de6aada920f988b57889ffce0f8a5fe67b5f1941caa",
+        "url": "https://github.com/VIPPotato/melatonin-access/releases/download/v1.4/MelatoninAccess-v1.4.zip"
+      },
+      "files": [
+        {
+          "path": "Mods/MelatoninAccess.dll",
+          "size": 98816,
+          "sha256": "c57af398452906b1244c7dc6dcc212a9f15fa3af93ef425282b921130f571ea7"
+        },
+        {
+          "path": "Mods/cutscene-ad/manifest.json",
+          "size": 2146,
+          "sha256": "c5e5488da0aecdce9f34bed981d7a49e979f67a8154db8a92960b110504ca7ee"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_1_intro.json",
+          "size": 847,
+          "sha256": "ce16d3f906955705f14de6c555d2c002df289c51ff2acaafab5353214ca8acea"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_1_outro.json",
+          "size": 710,
+          "sha256": "5167e0b4facbee10826dda916f59b7db8dfc27c835cb8e2720b094b98de6b3a7"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_2_intro.json",
+          "size": 853,
+          "sha256": "d643085bd2de95c6fe79cb76f97e3942a19d2bc54fecf9685a39a45d62acde6c"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_2_outro.json",
+          "size": 833,
+          "sha256": "b5817b98d8d2c55edd0c203110c8894baa48ce88afd2d4ce0052020208ed56dd"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_3_intro.json",
+          "size": 860,
+          "sha256": "73865261f47cf6a0403061279a77a8627d3c085f52d3f285ed334e47c8babc33"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_3_outro.json",
+          "size": 844,
+          "sha256": "8758a4e5767ca56e7197f7e7b890f99ee63c8218c1d5d7dcf28e9969e053f930"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_4_intro.json",
+          "size": 859,
+          "sha256": "15c5bf37a2917239195fbf1cd596fb7581493a48802107cd06d20ed53db46603"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_4_outro.json",
+          "size": 725,
+          "sha256": "c2465ef6b81c6d17d1e4a95fc3708b2245768450bc0366d1142d220d93a43cc0"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_5_intro.json",
+          "size": 731,
+          "sha256": "cfb6ee6d91f4851250a590394608dc23ff46394642f487426e3218b9749a9882"
+        },
+        {
+          "path": "Mods/cutscene-ad/scripts/chapter_5_outro.json",
+          "size": 859,
+          "sha256": "50a9afdf99cb95979ea737055190398c3e0112f030df3e6a749634083874efb7"
+        },
+        {
+          "path": "Mods/localization/loc.de.json",
+          "size": 23246,
+          "sha256": "bde5e44e25215b20fc3fa5de3f7447af17e52795aa6a52d8ad35e8af417a9a39"
+        },
+        {
+          "path": "Mods/localization/loc.en.json",
+          "size": 21916,
+          "sha256": "fac7a350ba422a1231dfb7de08d589d71db83dbdc97848ccb40d88221d2e1999"
+        },
+        {
+          "path": "Mods/localization/loc.es.json",
+          "size": 23333,
+          "sha256": "ccacab0270d533b15ec28d4d3fc285fcdacf20058bf12e4188e217a35b45fb42"
+        },
+        {
+          "path": "Mods/localization/loc.fr.json",
+          "size": 23387,
+          "sha256": "ee8a78b70c4c411a3bcc16012049007422c4c88169f390b768f335dea789dd7f"
+        },
+        {
+          "path": "Mods/localization/loc.ja.json",
+          "size": 24343,
+          "sha256": "22234ba1cd5ffe79223b16c8823b2fbe31bf2c26bf877a18cee9e587d9a1a432"
+        },
+        {
+          "path": "Mods/localization/loc.ko.json",
+          "size": 24073,
+          "sha256": "c0c2ae08ff3ea37dbc245984d72301d6a158804f4b9b2ffe60944bd96efff2a6"
+        },
+        {
+          "path": "Mods/localization/loc.pt.json",
+          "size": 23082,
+          "sha256": "cceda9d7ad1ed91ca0538c22177375fa70a24bffd9b004667cc01b205790258a"
+        },
+        {
+          "path": "Mods/localization/loc.vi.json",
+          "size": 23164,
+          "sha256": "12943f310b5c2c24260477bc7b033e46b00dbe384e398ef0d6631254926d2808"
+        },
+        {
+          "path": "Mods/localization/loc.zh-Hans.json",
+          "size": 22031,
+          "sha256": "2a244e1a33a6fd58e43df089413413486878b5abfca34b605e37f79a65726ad2"
+        },
+        {
+          "path": "Mods/localization/loc.zh-Hant.json",
+          "size": 22080,
+          "sha256": "b6bb76e3be9d66efc891546867025043108e07a6d981ddd4e9ecbb3f1bb0d7b0"
+        },
+        {
+          "path": "Tolk.dll",
+          "size": 97280,
+          "sha256": "ae4bc7f1e99ee468c3dbcd09e5ea0241b8c6ff93964e3d9faaaa95d50aa493ff"
+        },
+        {
+          "path": "UserData/Loader.cfg",
+          "size": 4152,
+          "sha256": "8c776bfeadee01f59b26450f84cca1eb1205b29bd5157848c11f369039d5c2df"
+        },
+        {
+          "path": "nvdaControllerClient32.dll",
+          "size": 132608,
+          "sha256": "a0d193883dcfbeae6e69aa00a0c5aa52a194b1a265617b8f920d0c7d4164c587"
+        }
+      ],
+      "requirements": {
+        "loader": {
+          "family": "melonloader",
+          "qualification": "pending",
+          "version": null,
+          "artifact": null
+        },
+        "runtime": "unqualified"
+      }
+    }
+  ]
+}

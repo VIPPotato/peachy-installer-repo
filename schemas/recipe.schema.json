@@ -149,7 +149,7 @@
       "type": "object",
       "properties": {
         "verification": {
-          "const": "upstream-declarations-only"
+          "enum": ["upstream-declarations-only", "archive-members-verified"]
         },
         "requiredPaths": {
           "type": "array",

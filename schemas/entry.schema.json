@@ -42,6 +42,9 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 100
+          },
+          "role": {
+            "enum": ["maintainer", "original-author", "upstream-author"]
           }
         },
         "required": [
@@ -63,6 +66,8 @@
       "format": "uri"
     },
     "releaseSource": {
+      "oneOf": [
+        {
       "type": "object",
       "properties": {
         "provider": {
@@ -118,7 +123,7 @@
               "pattern": "Z$"
             },
             "verification": {
-              "const": "provider-metadata-only"
+              "enum": ["provider-metadata-only", "archive-bytes-verified"]
             }
           },
           "required": [
@@ -133,6 +138,16 @@
             "verification"
           ],
           "additionalProperties": false
+        },
+        "manifest": {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]*[.]json$", "maxLength": 240},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "downloadUrl": {"type": "string", "format": "uri"}
+          },
+          "required": ["path", "sha256", "downloadUrl"],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -143,6 +158,20 @@
         "legacyRelease"
       ],
       "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "provider": {"const": "steam-workshop"},
+            "appId": {"type": "string", "pattern": "^[1-9][0-9]{0,9}$"},
+            "itemId": {"type": "string", "pattern": "^[1-9][0-9]{0,19}$"},
+            "url": {"type": "string", "format": "uri"},
+            "version": {"type": "null"}
+          },
+          "required": ["provider", "appId", "itemId", "url", "version"],
+          "additionalProperties": false
+        }
+      ]
     },
     "recipe": {
       "type": "object",
@@ -168,6 +197,20 @@
         "sha256"
       ],
       "additionalProperties": false
+    },
+    "recommendations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "entryId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 80},
+          "optional": {"const": true},
+          "reason": {"type": "string", "minLength": 1, "maxLength": 1000}
+        },
+        "required": ["entryId", "optional", "reason"],
+        "additionalProperties": false
+      }
     },
     "eligibility": {
       "type": "object",
@@ -204,6 +247,7 @@
             "enum": [
               "review-installation",
               "open-repository",
+              "open-steam-workshop",
               "install",
               "update",
               "uninstall"

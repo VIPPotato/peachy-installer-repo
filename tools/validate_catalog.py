@@ -88,7 +88,7 @@ def reject_external_refs(value):
 
 def validators(root):
     result = {}
-    for name in ("catalog", "entry", "recipe"):
+    for name in ("catalog", "entry", "recipe", "workshop-recipe", "version"):
         relative = f"schemas/{name}.schema.json"
         schema = parse(read_bytes(root, relative), relative)
         reject_external_refs(schema)
@@ -121,6 +121,49 @@ def bound_document(root, reference, directory, validator):
     return data
 
 
+def release_document(root, entry, recipe, checks):
+    source = entry["releaseSource"]
+    reference = source.get("manifest")
+    if not reference:
+        if source["legacyRelease"]["verification"] != "provider-metadata-only":
+            raise CatalogError("Verified archive records require a bound release manifest")
+        return False
+    if not reference["path"].startswith("releases/"):
+        raise CatalogError("Release manifest path must be inside releases/")
+    raw = read_bytes(root, reference["path"])
+    if hashlib.sha256(raw).hexdigest() != reference["sha256"]:
+        raise CatalogError("Release manifest hash mismatch")
+    document = parse(raw, reference["path"])
+    check_schema(checks["version"], document, reference["path"])
+    if __package__:
+        from .release_metadata import ReleaseError, check_document
+    else:
+        from release_metadata import ReleaseError, check_document
+    try:
+        check_document(document)
+    except ReleaseError as error:
+        raise CatalogError(str(error)) from error
+    release, legacy = document["release"], source["legacyRelease"]
+    if (document["modId"] != entry["id"] or release["repository"] != source["repository"]
+            or release["id"] != legacy["releaseId"] or release["tag"] != legacy["releaseTag"]):
+        raise CatalogError("Release manifest identity does not match the catalogue entry")
+    expected_url = f"https://github.com/{source['repository']}/releases/download/{release['tag']}/version.json"
+    if reference["downloadUrl"] != expected_url:
+        raise CatalogError("Release manifest URL does not match the selected release")
+    artifact = document["artifacts"][0]
+    asset = artifact["asset"]
+    if any(asset[left] != legacy[right] for left, right in
+           (("id", "assetId"), ("name", "assetName"), ("size", "size"), ("sha256", "sha256"), ("url", "downloadUrl"))):
+        raise CatalogError("Release manifest asset does not match the selected ZIP")
+    if (artifact["os"] != recipe["platform"]["os"]
+            or artifact["gameArchitecture"] != recipe["platform"]["gameArchitecture"]):
+        raise CatalogError("Release manifest platform does not match the recipe")
+    files = {item["path"] for item in artifact["files"]}
+    if any(path not in files for path in recipe["packageLayout"]["requiredPaths"]):
+        raise CatalogError("Release manifest is missing a required recipe path")
+    return True
+
+
 def validate(root):
     root = Path(root).absolute()
     for ancestor in reversed((root, *root.parents)):
@@ -135,23 +178,44 @@ def validate(root):
     if expires <= datetime.now(timezone.utc):
         raise CatalogError("Catalogue snapshot expired")
     ids, paths, recipes = set(), set(), set()
+    entries, workshop_items, game_apps = {}, set(), {}
+    workshop_count = manifest_count = 0
     for reference in data["entries"]:
         if reference["id"] in ids or reference["path"].casefold() in paths:
             raise CatalogError("Duplicate catalogue entry identity or path")
         ids.add(reference["id"])
         paths.add(reference["path"].casefold())
         entry = bound_document(root, reference, "entries", checks["entry"])
+        entries[entry["id"]] = entry
         source = entry["releaseSource"]
-        if entry["upstream"] != f"https://github.com/{source['repository']}":
-            raise CatalogError("Upstream URL does not match the release repository")
-        release = source["legacyRelease"]
-        if len(safe_parts(release["assetName"])) != 1 or not release["assetName"].endswith(".zip"):
-            raise CatalogError("Legacy asset name must identify one ZIP file")
-        expected = f"https://github.com/{source['repository']}/releases/download/{release['releaseTag']}/{release['assetName']}"
-        if release["downloadUrl"] != expected:
-            raise CatalogError("Legacy asset URL does not match its repository, tag and filename")
+        workshop = source["provider"] == "steam-workshop"
         if any(action["type"] in MUTATING_ACTIONS for action in entry["actions"]):
             raise CatalogError("An unverified or withdrawn entry cannot advertise installation, update or uninstall")
+        allowed_actions = {"open-steam-workshop", "open-repository"} if workshop else {"review-installation", "open-repository"}
+        if any(action["type"] not in allowed_actions for action in entry["actions"]):
+            raise CatalogError("Action is not supported by the declared delivery route")
+        github_upstream = re.fullmatch(r"https://github[.]com/[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*", entry["upstream"])
+        if any(action["type"] == "open-repository" for action in entry["actions"]) and not github_upstream:
+            raise CatalogError("Open repository requires a reviewed GitHub project URL")
+        if workshop:
+            expected = f"https://steamcommunity.com/sharedfiles/filedetails/?id={source['itemId']}"
+            if source["url"] != expected:
+                raise CatalogError("Workshop URL does not match its item identity")
+            if entry["upstream"] != expected and not github_upstream:
+                raise CatalogError("Unsupported Workshop upstream URL")
+            if source["itemId"] in workshop_items:
+                raise CatalogError("Duplicate Workshop item identity")
+            workshop_items.add(source["itemId"])
+            workshop_count += 1
+        else:
+            if entry["upstream"] != f"https://github.com/{source['repository']}":
+                raise CatalogError("Upstream URL does not match the release repository")
+            release = source["legacyRelease"]
+            if len(safe_parts(release["assetName"])) != 1 or not release["assetName"].endswith(".zip"):
+                raise CatalogError("Legacy asset name must identify one ZIP file")
+            expected = f"https://github.com/{source['repository']}/releases/download/{release['releaseTag']}/{release['assetName']}"
+            if release["downloadUrl"] != expected:
+                raise CatalogError("Legacy asset URL does not match its repository, tag and filename")
         author_ids = [author["id"] for author in entry["authors"]]
         if len(set(author_ids)) != len(author_ids):
             raise CatalogError("Duplicate author identity")
@@ -160,9 +224,17 @@ def validate(root):
             raise CatalogError("Duplicate recipe identity or path")
         recipes.add(recipe_ref["id"])
         paths.add(recipe_ref["path"].casefold())
-        recipe = bound_document(root, recipe_ref, "recipes", checks["recipe"])
+        recipe = bound_document(root, recipe_ref, "recipes", checks["workshop-recipe" if workshop else "recipe"])
         if recipe["modId"] != entry["id"] or recipe["gameId"] != entry["gameId"]:
             raise CatalogError("Recipe mod/game identity does not match the entry")
+        app_id = source["appId"] if workshop else recipe["discovery"]["appId"]
+        if game_apps.setdefault(entry["gameId"], app_id) != app_id:
+            raise CatalogError("Conflicting game/Steam identity")
+        if workshop:
+            if any(recipe["workshop"][key] != source[key] for key in ("appId", "itemId", "url")):
+                raise CatalogError("Workshop recipe/source identity mismatch")
+            continue
+        manifest_count += int(release_document(root, entry, recipe, checks))
         declared = [recipe["discovery"]["executable"], recipe["installedProbe"]["path"], recipe["filePolicy"]["configurationPath"]]
         declared.extend(probe["path"] for probe in recipe["installedProbe"]["support"])
         declared.extend(recipe["packageLayout"]["requiredPaths"])
@@ -171,7 +243,17 @@ def validate(root):
         required_paths = recipe["packageLayout"]["requiredPaths"]
         if len({path.casefold() for path in required_paths}) != len(required_paths):
             raise CatalogError("Duplicate package destination path")
+    for entry in entries.values():
+        recommended = set()
+        for recommendation in entry.get("recommendations", []):
+            target = recommendation["entryId"]
+            if target == entry["id"] or target in recommended or target not in entries:
+                raise CatalogError("Invalid, duplicate or missing recommendation target")
+            if entries[target]["gameId"] != entry["gameId"]:
+                raise CatalogError("A mod recommendation must refer to the same game")
+            recommended.add(target)
     return {"entries": len(ids), "recipes": len(recipes), "installable": 0,
+            "workshopEntries": workshop_count, "releaseManifests": manifest_count,
             "signatureVerified": False, "packageBytesVerified": False}
 
 
