@@ -1,0 +1,16 @@
+{
+  "name": "Grandpa's Greenhouse",
+  "game": "cookie-clicker",
+  "authors": [
+    {
+      "id": "it-carl",
+      "name": "it.Carl",
+      "role": "maintainer"
+    }
+  ],
+  "description": "Garden automation for Cookie Clicker's Farm minigame, by it.Carl. It breeds missing seeds and manages planting and harvesting. Cookie Clicker Access provides optional Steam-only accessibility support without changing its automation settings.",
+  "workshop": {
+    "appId": "1454400",
+    "itemId": "3792850996"
+  }
+}

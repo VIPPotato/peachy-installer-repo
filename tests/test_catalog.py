@@ -3,17 +3,12 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import shutil
 import tempfile
 import unittest
+from tools.build_catalog import build
 from tools.validate_catalog import CatalogError, validate
 
 SOURCE = Path(__file__).resolve().parents[1]
-INPUTS = (
-    "catalog.json", "entries/melatonin-access.json",
-    "recipes/melatonin-access/windows-steam.json",
-    "schemas/catalog.schema.json", "schemas/entry.schema.json", "schemas/recipe.schema.json",
-)
 
 class CatalogueTests(unittest.TestCase):
     def setUp(self):
@@ -22,20 +17,8 @@ class CatalogueTests(unittest.TestCase):
             raise RuntimeError("Set TMPDIR or RUNNER_TEMP to an owned scratch directory")
         self.temporary = tempfile.TemporaryDirectory(prefix="peachy-catalog-test-", dir=scratch)
         self.addCleanup(self.temporary.cleanup)
-        self.root = Path(self.temporary.name)
-        names = set(INPUTS)
-        names.update(str(path.relative_to(SOURCE)).replace("\\", "/") for path in (SOURCE / "schemas").glob("*.schema.json"))
-        for reference in json.loads((SOURCE / "catalog.json").read_text(encoding="utf-8"))["entries"]:
-            names.add(reference["path"])
-            entry = json.loads((SOURCE / reference["path"]).read_text(encoding="utf-8"))
-            names.add(entry["recipe"]["path"])
-            manifest = entry["releaseSource"].get("manifest")
-            if manifest:
-                names.add(manifest["path"])
-        for name in names:
-            target = self.root / name
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(SOURCE / name, target)
+        self.root = Path(self.temporary.name) / "snapshot"
+        build(SOURCE, self.root)
 
     def read(self, name):
         return json.loads((self.root / name).read_text(encoding="utf-8"))

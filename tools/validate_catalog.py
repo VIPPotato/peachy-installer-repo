@@ -86,10 +86,12 @@ def reject_external_refs(value):
             reject_external_refs(child)
 
 
-def validators(root):
+def validators(root, directory=None):
+    if directory is None:
+        directory = "tools/schemas" if (root / "tools/schemas").is_dir() else "schemas"
     result = {}
     for name in ("catalog", "entry", "recipe", "workshop-recipe", "version"):
-        relative = f"schemas/{name}.schema.json"
+        relative = f"{directory}/{name}.schema.json"
         schema = parse(read_bytes(root, relative), relative)
         reject_external_refs(schema)
         try:
@@ -168,7 +170,13 @@ def validate(root):
     root = Path(root).absolute()
     for ancestor in reversed((root, *root.parents)):
         reject_redirect(ancestor)
-    checks = validators(root)
+    if (root / "catalogue.json").exists():
+        if __package__:
+            from .build_catalog import build
+        else:
+            from build_catalog import build
+        return build(root)
+    checks = validators(root, "schemas")
     data = parse(read_bytes(root, "catalog.json"), "catalog.json")
     check_schema(checks["catalog"], data, "catalog.json")
     generated = datetime.fromisoformat(data["generatedAt"].replace("Z", "+00:00"))

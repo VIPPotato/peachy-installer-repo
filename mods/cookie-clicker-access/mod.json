@@ -1,0 +1,37 @@
+{
+  "name": "Cookie Clicker Access",
+  "game": "cookie-clicker",
+  "authors": [
+    {
+      "id": "vip-potato",
+      "name": "VIPPotato",
+      "role": "maintainer"
+    },
+    {
+      "id": "amsel",
+      "name": "Amsel",
+      "role": "upstream-author"
+    },
+    {
+      "id": "fiora-xena",
+      "name": "FioraXena",
+      "role": "original-author"
+    }
+  ],
+  "description": "Screen-reader and keyboard access for Cookie Clicker, published on Steam Workshop as Screen Reader Accessibility Enhancements. This fork adds Steam-only support for Frozen Cookies and Grandpa's Greenhouse. The GitHub ZIP and web userscript are separate distributions.",
+  "repository": "VIPPotato/Cookie-Clicker-Access-frozen-cookies-fix",
+  "workshop": {
+    "appId": "1454400",
+    "itemId": "3807399658"
+  },
+  "recommendations": [
+    {
+      "entryId": "frozen-cookies",
+      "reason": "Optional automation and statistics, with Steam-only menu and text-readout support in Cookie Clicker Access. Its automation settings remain separate."
+    },
+    {
+      "entryId": "grandpas-greenhouse",
+      "reason": "Optional Garden automation with Steam-only accessibility support. Frozen Cookies' optional 100% Consistency Combo can overwrite Garden plans."
+    }
+  ]
+}

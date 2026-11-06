@@ -1,0 +1,17 @@
+{
+  "name": "Frozen Cookies",
+  "game": "cookie-clicker",
+  "authors": [
+    {
+      "id": "erbkaiser",
+      "name": "Erbkaiser",
+      "role": "maintainer"
+    }
+  ],
+  "description": "Automation and statistics for Cookie Clicker, maintained by Erbkaiser. This is the Frozen Cookies fork linked by Cookie Clicker Access. The Workshop item requires an online connection. Automation settings belong to Frozen Cookies.",
+  "repository": "erbkaiser/FrozenCookies",
+  "workshop": {
+    "appId": "1454400",
+    "itemId": "2816199538"
+  }
+}

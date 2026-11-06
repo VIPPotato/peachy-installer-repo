@@ -1,0 +1,53 @@
+{
+  "name": "Melatonin Access",
+  "game": "melatonin",
+  "authors": [
+    {
+      "id": "vip-potato",
+      "name": "VIPPotato"
+    }
+  ],
+  "description": "Screen-reader support, gameplay cues and cutscene audio description for Melatonin by Half Asleep.",
+  "repository": "VIPPotato/melatonin-access",
+  "archive": {
+    "profile": "windows-x86-melonloader",
+    "appId": "1585220",
+    "executable": "Melatonin.exe",
+    "probe": {
+      "path": "Mods/MelatoninAccess.dll",
+      "assemblyName": "MelatoninAccess",
+      "modName": "Melatonin Access",
+      "gameDeveloper": "Half Asleep",
+      "gameName": "Melatonin",
+      "support": [
+        {
+          "path": "Tolk.dll",
+          "type": "pe-x86-header"
+        },
+        {
+          "path": "nvdaControllerClient32.dll",
+          "type": "pe-x86-header"
+        },
+        {
+          "path": "Mods/cutscene-ad/manifest.json",
+          "type": "exists"
+        },
+        {
+          "path": "Mods/localization/loc.en.json",
+          "type": "exists"
+        }
+      ]
+    },
+    "requiredPaths": [
+      "Mods/MelatoninAccess.dll",
+      "Mods/cutscene-ad/manifest.json",
+      "Mods/localization/loc.en.json",
+      "Tolk.dll",
+      "nvdaControllerClient32.dll",
+      "UserData/Loader.cfg"
+    ],
+    "configurationPath": "UserData/Loader.cfg",
+    "observedAt": "2026-11-06T16:55:24.262890Z",
+    "verification": "archive-bytes-verified"
+  }
+}
