@@ -1,0 +1,21 @@
+AGENTS.md
+CLAUDE.md
+project status.md
+todo.md
+NOTEBOOK.md
+notebook.md
+verification/
+.build/
+dist/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+cookies.txt
+.DS_Store

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "peachy-installer",
+  "revision": 1,
+  "generatedAt": "2026-11-06T15:07:56Z",
+  "expiresAt": "2026-12-06T15:07:56Z",
+  "origin": {
+    "provider": "github",
+    "repository": "VIPPotato/peachy-installer-repo",
+    "branch": "main"
+  },
+  "trust": {
+    "state": "unsigned",
+    "signature": null
+  },
+  "entries": [
+    {
+      "id": "melatonin-access",
+      "path": "entries/melatonin-access.json",
+      "sha256": "05d4efcecf6174610276eb706b359b2d17c9bac0fc4e36703f0c2d72960a5435"
+    }
+  ]
+}

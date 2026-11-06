@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "melatonin-access",
+  "gameId": "melatonin",
+  "name": "Melatonin Access",
+  "category": "mods",
+  "authors": [
+    {
+      "id": "vip-potato",
+      "name": "VIPPotato"
+    }
+  ],
+  "description": "Screen-reader support, gameplay cues and cutscene audio description for Melatonin by Half Asleep.",
+  "upstream": "https://github.com/VIPPotato/melatonin-access",
+  "releaseSource": {
+    "provider": "github",
+    "repository": "VIPPotato/melatonin-access",
+    "channel": "stable",
+    "metadataAsset": "version.json",
+    "legacyRelease": {
+      "releaseTag": "v1.4",
+      "releaseId": 391796478,
+      "assetId": 573493024,
+      "assetName": "MelatoninAccess-v1.4.zip",
+      "size": 215516,
+      "sha256": "b088af9155d24f5305186de6aada920f988b57889ffce0f8a5fe67b5f1941caa",
+      "downloadUrl": "https://github.com/VIPPotato/melatonin-access/releases/download/v1.4/MelatoninAccess-v1.4.zip",
+      "observedAt": "2026-11-06T15:07:56Z",
+      "verification": "provider-metadata-only"
+    }
+  },
+  "recipe": {
+    "id": "melatonin-access-windows-steam",
+    "path": "recipes/melatonin-access/windows-steam.json",
+    "sha256": "0e44d9b14fe59c878912fc0976799cb15c4061c5d5aecf2d34e4f9032ec8db75"
+  },
+  "eligibility": {
+    "state": "pending-verification",
+    "blockers": [
+      "The catalogue snapshot is unsigned; client trust and signature verification are not implemented.",
+      "The published ZIP has not been downloaded or its layout and installed member hashes qualified.",
+      "Compatible loader/runtime artifacts and hashes remain unqualified.",
+      "Differing existing-file and configuration policies require a selected production implementation.",
+      "The native client does not yet consume this catalogue or implement its production installation transactions."
+    ]
+  },
+  "actions": [
+    {
+      "type": "review-installation"
+    },
+    {
+      "type": "open-repository"
+    }
+  ]
+}

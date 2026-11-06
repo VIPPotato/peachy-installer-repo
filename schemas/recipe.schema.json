@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/VIPPotato/peachy-installer-repo/blob/main/schemas/recipe.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "modId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "gameId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "platform": {
+      "type": "object",
+      "properties": {
+        "os": {
+          "const": "windows"
+        },
+        "gameArchitecture": {
+          "const": "x86"
+        },
+        "runtime": {
+          "const": "unqualified"
+        }
+      },
+      "required": [
+        "os",
+        "gameArchitecture",
+        "runtime"
+      ],
+      "additionalProperties": false
+    },
+    "discovery": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "const": "steam"
+        },
+        "appId": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "executable": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "registeredIdentity": {
+          "const": "selected-app-manifest-and-contained-x86-executable"
+        },
+        "unregisteredIdentity": {
+          "const": "identifying-product-metadata-required"
+        }
+      },
+      "required": [
+        "provider",
+        "appId",
+        "executable",
+        "registeredIdentity",
+        "unregisteredIdentity"
+      ],
+      "additionalProperties": false
+    },
+    "installedProbe": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "pe-cli-meloninfo"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "assemblyName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "modName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "gameDeveloper": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "gameName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "versionScheme": {
+          "const": "numeric-dotted"
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              },
+              "type": {
+                "enum": [
+                  "pe-x86-header",
+                  "exists"
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "type",
+        "path",
+        "assemblyName",
+        "modName",
+        "gameDeveloper",
+        "gameName",
+        "versionScheme",
+        "support"
+      ],
+      "additionalProperties": false
+    },
+    "packageLayout": {
+      "type": "object",
+      "properties": {
+        "verification": {
+          "const": "upstream-declarations-only"
+        },
+        "requiredPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "verification",
+        "requiredPaths"
+      ],
+      "additionalProperties": false
+    },
+    "loader": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "const": "melonloader"
+        },
+        "qualification": {
+          "const": "pending"
+        },
+        "version": {
+          "type": "null"
+        },
+        "artifact": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "family",
+        "qualification",
+        "version",
+        "artifact"
+      ],
+      "additionalProperties": false
+    },
+    "filePolicy": {
+      "type": "object",
+      "properties": {
+        "differentExistingFiles": {
+          "const": "require-review"
+        },
+        "configurationPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "configurationPolicy": {
+          "const": "require-review"
+        },
+        "ownership": {
+          "const": "receipt-owned-files-only"
+        },
+        "unmanagedFiles": {
+          "const": "preserve"
+        }
+      },
+      "required": [
+        "differentExistingFiles",
+        "configurationPath",
+        "configurationPolicy",
+        "ownership",
+        "unmanagedFiles"
+      ],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "install": {
+          "const": false
+        },
+        "update": {
+          "const": false
+        },
+        "uninstall": {
+          "const": false
+        },
+        "adoption": {
+          "const": false
+        }
+      },
+      "required": [
+        "install",
+        "update",
+        "uninstall",
+        "adoption"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "modId",
+    "gameId",
+    "platform",
+    "discovery",
+    "installedProbe",
+    "packageLayout",
+    "loader",
+    "filePolicy",
+    "capabilities"
+  ],
+  "additionalProperties": false
+}
