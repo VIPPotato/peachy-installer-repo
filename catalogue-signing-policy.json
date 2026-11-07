@@ -1,0 +1,15 @@
+{
+    "schemaVersion":  1,
+    "algorithm":  "ecdsa-p256-sha256-p1363",
+    "minimumRevision":  4,
+    "minimumGeneratedAt":  "2026-11-07T11:17:49Z",
+    "keys":  [
+                 {
+                     "keyId":  "817200627350bd1d3038a39819c45275c65b7441057477bfee290c5ad1bc3c3d",
+                     "publicPoint":  "6edabdd918c8014d3201e10b1d14987b5bbe048e62a83a5a3ac4b62520d82f833ed4d129f705a1f4a4b0f0a205f14fd5ddbb4296cb7b7cb257690ea369ceb9f9",
+                     "validFrom":  "2026-11-07T11:17:49Z",
+                     "validUntil":  "2028-11-07T11:17:49Z",
+                     "revoked":  false
+                 }
+             ]
+}

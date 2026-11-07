@@ -17,7 +17,7 @@ else:
 SCHEMAS = ("catalog", "entry", "recipe", "workshop-recipe", "version")
 MARKER = ".peachy-generated.json"
 MANAGEMENT = {"install": False, "update": False, "uninstall": False, "adoption": False}
-UNSIGNED = "The catalogue snapshot is unsigned; client trust and signature verification are not implemented."
+UNSIGNED = "Catalogue authentication does not grant installation, ownership or external-action capability."
 WORKSHOP_BLOCKERS = [
     UNSIGNED,
     "Trusted external-action dispatch and Workshop local-installation observation are not implemented. "

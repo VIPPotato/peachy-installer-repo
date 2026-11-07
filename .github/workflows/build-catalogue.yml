@@ -18,6 +18,7 @@ jobs:
       - name: Check out source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
 
       - name: Set up Python
@@ -52,3 +53,63 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14
+
+  publish:
+    name: Sign and publish catalogue feed
+    needs: build
+    if: >-
+      github.repository == 'VIPPotato/peachy-installer-repo' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    concurrency:
+      group: peachy-catalogue-VIPPotato-peachy-installer-repo
+      cancel-in-progress: false
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check -r requirements-dev.txt
+
+      - name: Test Windows signing and offline publication
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: python -m unittest discover -s tests
+
+      - name: Build fresh publication candidate
+        run: >-
+          python tools/publish_catalogue.py prepare
+          --source-sha "${{ github.sha }}"
+          --output "${{ runner.temp }}/peachy-catalogue/snapshot"
+
+      - name: Sign exact candidate and verify public readback
+        shell: powershell
+        env:
+          PEACHY_CATALOGUE_SIGNING_KEY: ${{ secrets.PEACHY_CATALOGUE_SIGNING_KEY }}
+        run: >-
+          ./tools/sign_catalogue.ps1 -Action Sign
+          -Root "${{ runner.temp }}/peachy-catalogue/snapshot"
+          -Policy ./catalogue-signing-policy.json
+
+      - name: Publish validated feed with fast-forward readback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          python tools/publish_catalogue.py publish
+          --source-sha "${{ github.sha }}"
+          --snapshot "${{ runner.temp }}/peachy-catalogue/snapshot"
+          --policy ./catalogue-signing-policy.json

@@ -21,6 +21,8 @@ Example only, shortened from [Frozen Cookies](mods/frozen-cookies/mod.json):
 
 Required fields are `name`, `game`, `authors` and `description`. Each author needs `id` and `name`, with an optional `role`. Optional `repository` uses GitHub `owner/repo`; `category` defaults to `mods`. Supply exactly one `workshop` or `archive` route.
 
+Keep each author's ID and display name consistent across records. Peachy derives its Author filter from these credits; there is no separate author list to edit. Adding a record using supported capabilities does not require a client rebuild.
+
 Optional `recommendations` list an `entryId` and `reason` for each suggestion; they never declare dependencies. Set `withdrawn` to `true` to withdraw a record. An optional `blockers` list adds reasons it remains unavailable.
 
 ## Archives
@@ -43,3 +45,5 @@ python tools/validate_catalog.py --root dist/catalogue
 These commands are offline. The validator checks source records by default. Build `--check` validates without persistent output; a normal build generates the unsigned schema-1 client snapshot in `dist/catalogue`. Use `--output` to select another generated directory.
 
 Do not edit generated output or maintain hashes, Workshop URLs, recipes or actions by hand. Rebuilding replaces only the builder's own unedited output and refuses unknown or changed files. Building does not download, install or publish.
+
+Maintainers publish reviewed records through the [signed catalogue workflow](PUBLISHING.md). Contributors do not need a signing key or edits to a second entry list. Catalogue publication settings are maintained separately from individual mod records.
