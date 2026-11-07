@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "peachy-installer",
+  "revision": 4,
+  "generatedAt": "2026-11-07T11:58:32Z",
+  "expiresAt": "2026-12-07T11:58:32Z",
+  "origin": {
+    "provider": "github",
+    "repository": "VIPPotato/peachy-installer-repo",
+    "branch": "main"
+  },
+  "trust": {
+    "state": "unsigned",
+    "signature": null
+  },
+  "entries": [
+    {
+      "id": "cookie-clicker-access",
+      "path": "entries/cookie-clicker-access.json",
+      "sha256": "4ab8e8c5d5ffd2df9e8e62566ab18967f33988e3fc287f46441c05acdc5d6c59"
+    },
+    {
+      "id": "frozen-cookies",
+      "path": "entries/frozen-cookies.json",
+      "sha256": "745e7eabfe71a777ee9cc2bef2ed297ebc38a396dc90b892f7ef0d5cf78fceea"
+    },
+    {
+      "id": "grandpas-greenhouse",
+      "path": "entries/grandpas-greenhouse.json",
+      "sha256": "7a9c947c6fa2f41238bc976afa44bd2329aa9dd8d82031301131d76fc86d5b3e"
+    },
+    {
+      "id": "melatonin-access",
+      "path": "entries/melatonin-access.json",
+      "sha256": "ceaf1ec56a1d66c084f55cbaca8c4c206f68c80a9dc21c67408e6711e15df5b6"
+    }
+  ]
+}

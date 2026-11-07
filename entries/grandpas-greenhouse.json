@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "grandpas-greenhouse",
+  "gameId": "cookie-clicker",
+  "name": "Grandpa's Greenhouse",
+  "category": "mods",
+  "authors": [
+    {
+      "id": "it-carl",
+      "name": "it.Carl",
+      "role": "maintainer"
+    }
+  ],
+  "description": "Garden automation for Cookie Clicker's Farm minigame, by it.Carl. It breeds missing seeds and manages planting and harvesting. Cookie Clicker Access provides optional Steam-only accessibility support without changing its automation settings.",
+  "upstream": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792850996",
+  "releaseSource": {
+    "provider": "steam-workshop",
+    "appId": "1454400",
+    "itemId": "3792850996",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792850996",
+    "version": null
+  },
+  "recipe": {
+    "id": "grandpas-greenhouse-steam-workshop",
+    "path": "recipes/grandpas-greenhouse/steam-workshop.json",
+    "sha256": "73bc7a0e3b2f59ff731fd30be26a57b83a4276371928778fcb68b9ffb3a121cb"
+  },
+  "eligibility": {
+    "state": "pending-verification",
+    "blockers": [
+      "Catalogue authentication does not grant installation, ownership or external-action capability.",
+      "Trusted external-action dispatch and Workshop local-installation observation are not implemented. Subscription, in-game activation and Workshop payload version remain unobserved."
+    ]
+  },
+  "actions": [
+    {
+      "type": "open-steam-workshop"
+    }
+  ]
+}

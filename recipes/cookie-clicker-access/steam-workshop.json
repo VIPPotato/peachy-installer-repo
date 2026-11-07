@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "cookie-clicker-access-steam-workshop",
+  "modId": "cookie-clicker-access",
+  "gameId": "cookie-clicker",
+  "deliveryRoute": "steam-workshop",
+  "workshop": {
+    "appId": "1454400",
+    "itemId": "3807399658",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3807399658"
+  },
+  "installedProbe": {
+    "type": "not-implemented"
+  },
+  "ownership": "external-steam",
+  "capabilities": {
+    "install": false,
+    "update": false,
+    "uninstall": false,
+    "adoption": false
+  }
+}

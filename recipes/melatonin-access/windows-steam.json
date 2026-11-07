@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "melatonin-access-windows-steam",
+  "modId": "melatonin-access",
+  "gameId": "melatonin",
+  "platform": {
+    "os": "windows",
+    "gameArchitecture": "x86",
+    "runtime": "unqualified"
+  },
+  "discovery": {
+    "provider": "steam",
+    "appId": "1585220",
+    "executable": "Melatonin.exe",
+    "registeredIdentity": "selected-app-manifest-and-contained-x86-executable",
+    "unregisteredIdentity": "identifying-product-metadata-required"
+  },
+  "installedProbe": {
+    "type": "pe-cli-meloninfo",
+    "path": "Mods/MelatoninAccess.dll",
+    "assemblyName": "MelatoninAccess",
+    "modName": "Melatonin Access",
+    "gameDeveloper": "Half Asleep",
+    "gameName": "Melatonin",
+    "versionScheme": "numeric-dotted",
+    "support": [
+      {
+        "path": "Tolk.dll",
+        "type": "pe-x86-header"
+      },
+      {
+        "path": "nvdaControllerClient32.dll",
+        "type": "pe-x86-header"
+      },
+      {
+        "path": "Mods/cutscene-ad/manifest.json",
+        "type": "exists"
+      },
+      {
+        "path": "Mods/localization/loc.en.json",
+        "type": "exists"
+      }
+    ]
+  },
+  "packageLayout": {
+    "verification": "archive-members-verified",
+    "requiredPaths": [
+      "Mods/MelatoninAccess.dll",
+      "Mods/cutscene-ad/manifest.json",
+      "Mods/localization/loc.en.json",
+      "Tolk.dll",
+      "nvdaControllerClient32.dll",
+      "UserData/Loader.cfg"
+    ]
+  },
+  "loader": {
+    "family": "melonloader",
+    "qualification": "pending",
+    "version": null,
+    "artifact": null
+  },
+  "filePolicy": {
+    "differentExistingFiles": "require-review",
+    "configurationPath": "UserData/Loader.cfg",
+    "configurationPolicy": "require-review",
+    "ownership": "receipt-owned-files-only",
+    "unmanagedFiles": "preserve"
+  },
+  "capabilities": {
+    "install": false,
+    "update": false,
+    "uninstall": false,
+    "adoption": false
+  }
+}

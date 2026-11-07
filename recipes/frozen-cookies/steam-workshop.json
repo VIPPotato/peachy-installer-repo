@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "frozen-cookies-steam-workshop",
+  "modId": "frozen-cookies",
+  "gameId": "cookie-clicker",
+  "deliveryRoute": "steam-workshop",
+  "workshop": {
+    "appId": "1454400",
+    "itemId": "2816199538",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2816199538"
+  },
+  "installedProbe": {
+    "type": "not-implemented"
+  },
+  "ownership": "external-steam",
+  "capabilities": {
+    "install": false,
+    "update": false,
+    "uninstall": false,
+    "adoption": false
+  }
+}

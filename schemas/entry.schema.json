@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/VIPPotato/peachy-installer-repo/blob/main/schemas/entry.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "gameId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 80
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 150
+    },
+    "category": {
+      "enum": [
+        "mods",
+        "software",
+        "extras"
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "role": {
+            "enum": ["maintainer", "original-author", "upstream-author"]
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 128
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "upstream": {
+      "type": "string",
+      "format": "uri"
+    },
+    "releaseSource": {
+      "oneOf": [
+        {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "const": "github"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "maxLength": 200
+        },
+        "channel": {
+          "const": "stable"
+        },
+        "metadataAsset": {
+          "const": "version.json"
+        },
+        "legacyRelease": {
+          "type": "object",
+          "properties": {
+            "releaseTag": {
+              "type": "string",
+              "pattern": "^v[0-9]+(?:[.][0-9]+){0,3}$"
+            },
+            "releaseId": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "assetId": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "assetName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 180
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 134217728
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "downloadUrl": {
+              "type": "string",
+              "format": "uri"
+            },
+            "observedAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            },
+            "verification": {
+              "enum": ["provider-metadata-only", "archive-bytes-verified"]
+            }
+          },
+          "required": [
+            "releaseTag",
+            "releaseId",
+            "assetId",
+            "assetName",
+            "size",
+            "sha256",
+            "downloadUrl",
+            "observedAt",
+            "verification"
+          ],
+          "additionalProperties": false
+        },
+        "manifest": {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]*[.]json$", "maxLength": 240},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "downloadUrl": {"type": "string", "format": "uri"}
+          },
+          "required": ["path", "sha256", "downloadUrl"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "provider",
+        "repository",
+        "channel",
+        "metadataAsset",
+        "legacyRelease"
+      ],
+      "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "provider": {"const": "steam-workshop"},
+            "appId": {"type": "string", "pattern": "^[1-9][0-9]{0,9}$"},
+            "itemId": {"type": "string", "pattern": "^[1-9][0-9]{0,19}$"},
+            "url": {"type": "string", "format": "uri"},
+            "version": {"type": "null"}
+          },
+          "required": ["provider", "appId", "itemId", "url", "version"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "recipe": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._/-]*[.]json$",
+          "maxLength": 240
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "recommendations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "properties": {
+          "entryId": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 80},
+          "optional": {"const": true},
+          "reason": {"type": "string", "minLength": 1, "maxLength": 1000}
+        },
+        "required": ["entryId", "optional", "reason"],
+        "additionalProperties": false
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "pending-verification",
+            "withdrawn"
+          ]
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "minItems": 1,
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "state",
+        "blockers"
+      ],
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "review-installation",
+              "open-repository",
+              "open-steam-workshop",
+              "install",
+              "update",
+              "uninstall"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 128
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "gameId",
+    "name",
+    "category",
+    "authors",
+    "description",
+    "upstream",
+    "releaseSource",
+    "recipe",
+    "eligibility",
+    "actions"
+  ],
+  "additionalProperties": false
+}

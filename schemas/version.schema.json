@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/VIPPotato/peachy-installer-repo/blob/main/schemas/version.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "modId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[0-9]+(?:[.][0-9]+){0,3}$"
+    },
+    "release": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "const": "github"
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$"
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^v[0-9]+(?:[.][0-9]+){0,3}$"
+        },
+        "commit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "channel": {
+          "const": "stable"
+        }
+      },
+      "required": [
+        "provider",
+        "repository",
+        "id",
+        "tag",
+        "commit",
+        "channel"
+      ],
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "os": {
+            "const": "windows"
+          },
+          "gameArchitecture": {
+            "const": "x86"
+          },
+          "layout": {
+            "const": "game-root-overlay"
+          },
+          "asset": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 180
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 134217728
+              },
+              "sha256": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64,
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "maxLength": 2048
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "size",
+              "sha256",
+              "url"
+            ],
+            "additionalProperties": false
+          },
+          "files": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4096,
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "size": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 67108864
+                },
+                "sha256": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64,
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "size",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "requirements": {
+            "type": "object",
+            "properties": {
+              "loader": {
+                "type": "object",
+                "properties": {
+                  "family": {
+                    "const": "melonloader"
+                  },
+                  "qualification": {
+                    "const": "pending"
+                  },
+                  "version": {
+                    "type": "null"
+                  },
+                  "artifact": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "family",
+                  "qualification",
+                  "version",
+                  "artifact"
+                ],
+                "additionalProperties": false
+              },
+              "runtime": {
+                "const": "unqualified"
+              }
+            },
+            "required": [
+              "loader",
+              "runtime"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "os",
+          "gameArchitecture",
+          "layout",
+          "asset",
+          "files",
+          "requirements"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "modId",
+    "version",
+    "release",
+    "artifacts"
+  ],
+  "additionalProperties": false
+}

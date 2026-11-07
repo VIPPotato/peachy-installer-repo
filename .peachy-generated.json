@@ -1,0 +1,20 @@
+{
+  "generator": "peachy-catalogue-builder",
+  "files": {
+    "catalog.json": "fc04aa6063edff8253abb8b372bca256f08d74fcb8955a12c91455ef301ee992",
+    "entries/cookie-clicker-access.json": "4ab8e8c5d5ffd2df9e8e62566ab18967f33988e3fc287f46441c05acdc5d6c59",
+    "entries/frozen-cookies.json": "745e7eabfe71a777ee9cc2bef2ed297ebc38a396dc90b892f7ef0d5cf78fceea",
+    "entries/grandpas-greenhouse.json": "7a9c947c6fa2f41238bc976afa44bd2329aa9dd8d82031301131d76fc86d5b3e",
+    "entries/melatonin-access.json": "ceaf1ec56a1d66c084f55cbaca8c4c206f68c80a9dc21c67408e6711e15df5b6",
+    "recipes/cookie-clicker-access/steam-workshop.json": "9a44f7c517fb84963b44ce8e4a9ea8a0dc1b0092b429ae9860c600ac804c4c80",
+    "recipes/frozen-cookies/steam-workshop.json": "1faa94a2afff5aa89f6d48295a098c6ce043c43d6afcb0e5e7267760d1c13825",
+    "recipes/grandpas-greenhouse/steam-workshop.json": "73bc7a0e3b2f59ff731fd30be26a57b83a4276371928778fcb68b9ffb3a121cb",
+    "recipes/melatonin-access/windows-steam.json": "99f2c5b323a050ce968e7738c6b4c78fa7be495ed731ecde71028fd63921dd69",
+    "releases/melatonin-access/v1.4/version.json": "e5c80a96bc48919c6380156a558b26d0dd52585f026a7ae4ab35e1929ecfc7c6",
+    "schemas/catalog.schema.json": "bdffa5a45dc7861ca332f7545132d3c0b20229e8cf8f50aec00cde12f6429461",
+    "schemas/entry.schema.json": "0dc9363fa2503e4381ed2c6937356c971e3e56e8902d1b6ccfbf443f469c10ed",
+    "schemas/recipe.schema.json": "00365b1e2644a759a68cb498069ba3b4b56412fe6b517b28efc6009ecff07812",
+    "schemas/version.schema.json": "a710e60da2da8af0313f4534300a86ee7c0734ad7293207e8c7135de429e9f44",
+    "schemas/workshop-recipe.schema.json": "31ac9b202b95a8cc4624abb0a4c485bb84de4d3e22c3b2376e627baf27ee5f7b"
+  }
+}
