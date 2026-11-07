@@ -80,11 +80,12 @@ try {
     # argument, temporary file, JSON value or Python/Git environment variable.
     if ($Action -ceq 'Sign') {
         $secret = [Environment]::GetEnvironmentVariable('PEACHY_CATALOGUE_SIGNING_KEY', 'Process')
-        # gh stdin/file provisioning can retain one terminal line ending. It is
-        # transport framing, not part of the base64 blob; all other bytes stay strict.
+        # Windows PowerShell's redirected stdin writer can add a UTF-8 BOM and
+        # one line ending. Remove only that framing, not arbitrary whitespace.
         if (-not [string]::IsNullOrEmpty($secret)) {
-            if ($secret.EndsWith("`r`n")) { $secret = $secret.Substring(0, $secret.Length - 2) }
-            elseif ($secret.EndsWith("`n")) { $secret = $secret.Substring(0, $secret.Length - 1) }
+            if ($secret.StartsWith([string][char]0xfeff, [StringComparison]::Ordinal)) { $secret = $secret.Substring(1) }
+            if ($secret.EndsWith("`r`n", [StringComparison]::Ordinal)) { $secret = $secret.Substring(0, $secret.Length - 2) }
+            elseif ($secret.EndsWith("`n", [StringComparison]::Ordinal)) { $secret = $secret.Substring(0, $secret.Length - 1) }
         }
     }
     [Environment]::SetEnvironmentVariable('PEACHY_CATALOGUE_SIGNING_KEY', $null, 'Process')
@@ -95,20 +96,24 @@ try {
     $stage = 'bundle-policy-validation'
     $information = Get-Inspection
     if ($Action -ceq 'Sign') {
-        $stage = 'private-key-validation'
+        $stage = 'candidate-signature-precondition'
         if ($null -ne $information.PSObject.Properties['envelope']) { throw 'Existing signature refused' }
+        $stage = 'private-key-encoding'
         if ([string]::IsNullOrEmpty($secret) -or $secret.Length -ne 140 -or
             $secret -cnotmatch '\A[A-Za-z0-9+/]{139}=\z') { throw 'Invalid private blob encoding' }
         $privateBytes = [Convert]::FromBase64String($secret)
         $secret = $null
+        $stage = 'private-key-blob-layout'
         if ($privateBytes.Length -ne 104 -or [BitConverter]::ToUInt32($privateBytes, 0) -ne 0x32534345 -or
             [BitConverter]::ToUInt32($privateBytes, 4) -ne 32) { throw 'Invalid private blob layout' }
         [byte[]]$point = New-Object byte[] 64
         [Array]::Copy($privateBytes, 8, $point, 0, 64)
+        $stage = 'private-key-public-identity'
         $keyId = Hex ($script:sha256.ComputeHash($point))
         $pointHex = Hex $point
         $matches = @($information.keys | Where-Object { $_.keyId -ceq $keyId -and $_.publicPoint -ceq $pointHex })
         if ($matches.Count -ne 1) { throw 'Private/public policy identity mismatch' }
+        $stage = 'private-key-import'
         $privateKey = [Security.Cryptography.CngKey]::Import($privateBytes, [Security.Cryptography.CngKeyBlobFormat]::EccPrivateBlob)
         [Array]::Clear($privateBytes, 0, $privateBytes.Length)
         $privateBytes = $null

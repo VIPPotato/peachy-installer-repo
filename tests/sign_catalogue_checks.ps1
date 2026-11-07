@@ -109,6 +109,9 @@ try {
     RunSigner 'Sign' $false 'revoked-key-refusal'
     $policyData.keys[0].revoked = $false
     WriteJson $script:policy $policyData
+    $env:PEACHY_CATALOGUE_SIGNING_KEY = [string][char]0xfeff + [string][char]0xfeff + $script:privateEncoding
+    RunSigner 'Sign' $false 'repeated-terminal-bom-refusal'
+    Require (-not [IO.File]::Exists($signaturePath)) 'repeated terminal BOM wrote nothing'
     $env:PEACHY_CATALOGUE_SIGNING_KEY = $script:privateEncoding + "`r`n`r`n"
     RunSigner 'Sign' $false 'repeated-terminal-line-ending-refusal'
     Require (-not [IO.File]::Exists($signaturePath)) 'repeated terminal line ending wrote nothing'
@@ -117,6 +120,9 @@ try {
     Remove-Item -LiteralPath $signaturePath
     $env:PEACHY_CATALOGUE_SIGNING_KEY = $script:privateEncoding + "`r`n"
     RunSigner 'Sign' $true 'stdin-terminal-line-ending-accepted'
+    Remove-Item -LiteralPath $signaturePath
+    $env:PEACHY_CATALOGUE_SIGNING_KEY = [string][char]0xfeff + $script:privateEncoding + "`r`n"
+    RunSigner 'Sign' $true 'stdin-bom-and-line-ending-accepted'
     $env:PEACHY_CATALOGUE_SIGNING_KEY = $script:privateEncoding
     [byte[]]$signedEnvelope = [IO.File]::ReadAllBytes($signaturePath)
     $envelope = [IO.File]::ReadAllText($signaturePath) | ConvertFrom-Json
